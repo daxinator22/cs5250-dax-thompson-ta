@@ -3,6 +3,7 @@ import boto3, Security_Group
 class Instance():
 
     instance = None
+    name = None
     instance_id = None
     ami = None
     instance_type = None
@@ -14,6 +15,7 @@ class Instance():
 
     def __init__(self, instance):
         self.instance = instance
+        self.name = self.instance.tags[0]['Value']
         self.instance_id = instance.id
         self.ami = instance.image_id
         self.instance_type = instance.instance_type
@@ -44,7 +46,7 @@ class Instance():
 
     def get_instance(self):
         return f"""
-        {self.instance.tags[0]['Value']}
+        {self.name}
         -----------------------------------
         Instance ID       : {self.instance_id}
         AMI               : {self.ami}

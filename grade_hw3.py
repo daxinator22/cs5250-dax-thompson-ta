@@ -16,7 +16,7 @@ def check_iam_role(role):
             print(f'    Found {policy} in IAM Role')
             count = count + 1
         else:
-            print('    Error - Wrong policy: {policy}')
+            print(f'    Error - Wrong policy: {policy}')
 
     if count < 3:
         print(f'    Mising policies: {3 - count}')
@@ -25,6 +25,25 @@ def view_iam_role(role):
 
     print('____________IAM_Role__________________')
     print(role.get_role())
+
+def check_instances(instances):
+    print('Checking EC2 Instances...')
+    count = 0
+    for instance in instances:
+        if instance.name == 'HostA':
+            print('    Found HostA')
+            count = count + 1
+
+        if instance.name == 'HostB':
+            print('    Found HostB')
+            count = count + 1
+
+        if instance.name == 'HostC':
+            print('    Found HostC')
+            count = count + 1
+
+    if count < 3:
+        print(f"Misisng instances: {3 - count}")
 
 def view_instances(instance_list):
     print('\n____________EC2_Instances_____________')
@@ -74,11 +93,14 @@ instances = list()
 for instance in instances_from_aws:
     vpc_id = instance.vpc_id
     instances.append(Instance.Instance(instance))
-
-vpc = VPC.VPC(vpc_id)
-print()
-check_vpc(vpc)
+try:
+    vpc = VPC.VPC(vpc_id)
+    print()
+    check_vpc(vpc)
+except:
+    print(f'Error retrieving VPC {vpc_id}')
 
 for instance in instances:
     instance.subnet = vpc.get_subnet_name(instance.subnet)
 
+check_instances(instances)
