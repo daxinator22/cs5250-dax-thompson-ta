@@ -1,0 +1,90 @@
+____________IAM_Role__________________
+
+        cs5250-EC2-backend-role
+        -----------------------------------
+        AmazonS3FullAccess
+        AmazonDynamoDBFullAccess
+        AmazonRDSDataFullAccess
+
+_________________VPC__________________
+
+        VPC ID       : vpc-93da7fee
+        -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-71a42d17    us-east-1b            cs5250-private1
+            -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-f7df48d6    us-east-1c            cs5250-private2
+            -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-85d144da    us-east-1a            cs5250-public
+            -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-1bd59615    us-east-1f            None
+            -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-12934f23    us-east-1e            None
+            -----------------------------------
+        
+            Subnet ID:      Availability Zone:          Name:
+            subnet-9ecb92d3    us-east-1d            None
+            -----------------------------------
+        
+
+____________EC2_Instances_____________
+
+        HostB
+        -----------------------------------
+        Instance ID       : i-03a4b97d3834b7010
+        AMI               : ami-0053f34b22df259f2
+        Instance Type     : t2.micro
+        Subnet            : cs5250-private1
+        Public IP Address : None
+        IAM Role          : cs5250-EC2-backend-role
+        Storage           : 8 GiB
+        Security Group    : vpc-only-sg
+                ---------------
+                ID             - sg-0b034cc23aa71bbd4
+                Inbound Rules  - Protocol: -1 ||| IP Ranges: 172.31.0.0/16
+                Outbound Rules - Protocol: -1 ||| IP Ranges: 0.0.0.0/0
+        
+        
+
+        HostC
+        -----------------------------------
+        Instance ID       : i-0b1766cda19d7917e
+        AMI               : ami-0053f34b22df259f2
+        Instance Type     : t2.micro
+        Subnet            : cs5250-private2
+        Public IP Address : None
+        IAM Role          : cs5250-EC2-backend-role
+        Storage           : 16 GiB
+        Security Group    : vpc-only-sg
+                ---------------
+                ID             - sg-0b034cc23aa71bbd4
+                Inbound Rules  - Protocol: -1 ||| IP Ranges: 172.31.0.0/16
+                Outbound Rules - Protocol: -1 ||| IP Ranges: 0.0.0.0/0
+        
+        
+
+        HostA
+        -----------------------------------
+        Instance ID       : i-0d0846650de1f4247
+        AMI               : ami-0be2609ba883822ec
+        Instance Type     : t2.micro
+        Subnet            : cs5250-public
+        Public IP Address : 100.24.157.220
+        IAM Role          : None
+        Storage           : 8 GiB
+        Security Group    : ssh-only-sg
+                ---------------
+                ID             - sg-0d7d237861497058c
+                Inbound Rules  - Protocol: tcp ||| IP Ranges: 0.0.0.0/0
+                Outbound Rules - Protocol: -1 ||| IP Ranges: 0.0.0.0/0
+        
+        

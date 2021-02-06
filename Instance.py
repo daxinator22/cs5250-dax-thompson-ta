@@ -1,4 +1,4 @@
-import boto3
+import boto3, Security_Group
 
 class Instance():
 
@@ -21,7 +21,7 @@ class Instance():
         self.ip = instance.public_ip_address
         self.iam = self.parse_iam()
         self.storage = self.parse_storage()
-        self.sg = self.parse_sg()
+        self.sg = Security_Group.Security_Group(self.parse_sg())
 
     def parse_iam(self):
         if self.instance.iam_instance_profile == None:
@@ -40,7 +40,7 @@ class Instance():
         return result
 
     def parse_sg(self):
-        return self.instance.security_groups[0]['GroupName']
+        return self.instance.security_groups[0]['GroupId']
 
     def get_instance(self):
         return f"""
@@ -53,5 +53,5 @@ class Instance():
         Public IP Address : {self.ip}
         IAM Role          : {self.iam}
         Storage           : {self.storage}
-        Security Group    : {self.sg}
+        Security Group    : {self.sg.get_sg()}
         """
