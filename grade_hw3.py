@@ -10,7 +10,7 @@ def check_iam_role(role):
         print(f'    Error - IAM Role has name: {role.name}')
 
     count = 0
-    policies = ['AmazonS3FullAccess', 'AmazonDynamoDBFullAccess', 'AmazonRDSDataFullAccess']
+    policies = ['AmazonS3FullAccess', 'AmazonDynamoDBFullAccess', 'AmazonRDSFullAccess']
     for policy in role.policies:
         if policy in policies:
             print(f'    Found {policy} in IAM Role')
@@ -32,14 +32,205 @@ def check_instances(instances):
     for instance in instances:
         if instance.name == 'HostA':
             print('    Found HostA')
+            if instance.ami == 'ami-0be2609ba883822ec':
+                print('        Found Amazon Linux AMI')
+
+            else:
+                print(f'        Error: Incorrect AMI - {instance.ami}')
+
+            if instance.instance_type == 't2.micro':
+                print('        Found Correct Instance Type')
+
+            else:
+                print(f'        Error: Incorrect Instance Type - {instance.instance_type}')
+
+            if instance.subnet == 'cs5250-public':
+                print('        Found Correct Subnet')
+
+            else:
+                print(f'        Error: Incorrect Subnet - {instance.subnet}')
+
+            if instance.iam == 'None':
+                print('        Found Correct IAM Role')
+
+            else:
+                print(f'        Error: Incorrect IAM Role - {instance.iam}')
+
+            if not instance.ip == None:
+                print('        Found Public IP Address')
+
+            else:
+                print(f'        Error: Incorrect Public IP Settings - {instance.ip}')
+
+            if instance.storage == '8 GiB':
+                print('        Found Correct Storage')
+
+            else:
+                print(f'        Error: Incorrect Storage Size - {instance.storage}')
+
+            if instance.sg.name == 'ssh-only-sg':
+                print('        Found Security Group')
+                if instance.sg.permissions_in['IpProtocol'] == 'tcp':
+                    print('            Found Security Group In IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Protocol - {instance.sg.permissions_in["IpProtocol"]}')
+                if instance.sg.permissions_in['IpRanges'][0]['CidrIp'] == '0.0.0.0/0':
+                    print('            Found Security Group In IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Ranges - {instance.sg.permissions_in["IpRanges"][0]["CidrIp"]}')
+
+                if instance.sg.permissions_out['IpProtocol'] == '-1':
+                    print('            Found Security Group Out IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Protocol - {instance.sg.permissions_out["IpProtocol"]}')
+                if instance.sg.permissions_out['IpRanges'][0]['CidrIp'] == '0.0.0.0/0':
+                    print('            Found Security Group Out IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Ranges - {instance.sg.permissions_out["IpRanges"][0]["CidrIp"]}')
+
+
+
+            else:
+                print(f'        Error: Incorrect Security Group - {instance.sg.name}')
+
             count = count + 1
 
         if instance.name == 'HostB':
             print('    Found HostB')
+            if instance.ami == 'ami-0053f34b22df259f2':
+                print('        Found Amazon Linux AMI')
+
+            else:
+                print(f'        Error: Incorrect AMI - {instance.ami}')
+
+            if instance.instance_type == 't2.micro':
+                print('        Found Correct Instance Type')
+
+            else:
+                print(f'        Error: Incorrect Instance Type - {instance.instance_type}')
+
+            if instance.subnet == 'cs5250-private1':
+                print('        Found Correct Subnet')
+
+            else:
+                print(f'        Error: Incorrect Subnet - {instance.subnet}')
+
+            if instance.iam == 'cs5250-EC2-backend-role':
+                print('        Found Correct IAM Role')
+
+            else:
+                print(f'        Error: Incorrect IAM Role - {instance.iam}')
+
+            if not instance.ip == None:
+                print('        Found Public IP Address')
+
+            else:
+                print(f'        Error: Incorrect Public IP Settings - {instance.ip}')
+
+            if instance.storage == '8 GiB':
+                print('        Found Correct Storage')
+
+            else:
+                print(f'        Error: Incorrect Storage Size - {instance.storage}')
+
+            if instance.sg.name == 'vpc-only-sg':
+                print('        Found Security Group')
+                if instance.sg.permissions_in['IpProtocol'] == '-1':
+                    print('            Found Security Group In IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Protocol - {instance.sg.permissions_in["IpProtocol"]}')
+                if instance.sg.permissions_in['IpRanges'][0]['CidrIp'] == '172.31.0.0/16':
+                    print('            Found Security Group In IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Ranges - {instance.sg.permissions_in["IpRanges"][0]["CidrIp"]}')
+
+                if instance.sg.permissions_out['IpProtocol'] == '-1':
+                    print('            Found Security Group Out IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Protocol - {instance.sg.permissions_out["IpProtocol"]}')
+                if instance.sg.permissions_out['IpRanges'][0]['CidrIp'] == '0.0.0.0/0':
+                    print('            Found Security Group Out IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Ranges - {instance.sg.permissions_out["IpRanges"][0]["CidrIp"]}')
+
+            else:
+                print(f'        Error: Incorrect Security Group - {instance.sg.name}')
+
             count = count + 1
 
         if instance.name == 'HostC':
             print('    Found HostC')
+            if instance.ami == 'ami-0053f34b22df259f2':
+                print('        Found Amazon Linux AMI')
+
+            else:
+                print(f'        Error: Incorrect AMI - {instance.ami}')
+
+            if instance.instance_type == 't2.micro':
+                print('        Found Correct Instance Type')
+
+            else:
+                print(f'        Error: Incorrect Instance Type - {instance.instance_type}')
+
+            if instance.subnet == 'cs5250-private2':
+                print('        Found Correct Subnet')
+
+            else:
+                print(f'        Error: Incorrect Subnet - {instance.subnet}')
+
+            if instance.iam == 'cs5250-EC2-backend-role':
+                print('        Found Correct IAM Role')
+
+            else:
+                print(f'        Error: Incorrect IAM Role - {instance.iam}')
+
+            if not instance.ip == None:
+                print('        Found Public IP Address')
+
+            else:
+                print(f'        Error: Incorrect Public IP Settings - {instance.ip}')
+
+            if instance.storage == '16 GiB':
+                print('        Found Correct Storage')
+
+            else:
+                print(f'        Error: Incorrect Storage Size - {instance.storage}')
+
+            if instance.sg.name == 'vpc-only-sg':
+                print('        Found Security Group')
+                if instance.sg.permissions_in['IpProtocol'] == '-1':
+                    print('            Found Security Group In IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Protocol - {instance.sg.permissions_in["IpProtocol"]}')
+                if instance.sg.permissions_in['IpRanges'][0]['CidrIp'] == '172.31.0.0/16':
+                    print('            Found Security Group In IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group In IP Ranges - {instance.sg.permissions_in["IpRanges"][0]["CidrIp"]}')
+
+                if instance.sg.permissions_out['IpProtocol'] == '-1':
+                    print('            Found Security Group Out IP Protocol')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Protocol - {instance.sg.permissions_out["IpProtocol"]}')
+                if instance.sg.permissions_out['IpRanges'][0]['CidrIp'] == '0.0.0.0/0':
+                    print('            Found Security Group Out IP Range')
+
+                else:
+                    print(f'            Error: Incorrect Security Group Out IP Ranges - {instance.sg.permissions_out["IpRanges"][0]["CidrIp"]}')
+
+            else:
+                print(f'        Error: Incorrect Security Group - {instance.sg.name}')
+
             count = count + 1
 
     if count < 3:
@@ -103,4 +294,5 @@ except:
 for instance in instances:
     instance.subnet = vpc.get_subnet_name(instance.subnet)
 
+print()
 check_instances(instances)
