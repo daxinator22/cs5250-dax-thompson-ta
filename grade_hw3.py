@@ -32,7 +32,7 @@ def check_instances(instances):
     for instance in instances:
         if instance.name == 'HostA':
             print('    Found HostA')
-            if instance.ami == 'ami-0be2609ba883822ec':
+            if instance.ami == 'ami-0be2609ba883822ec' or instance.ami == 'ami-047a51fa27710816e':
                 print('        Found Amazon Linux AMI')
 
             else:
@@ -57,7 +57,7 @@ def check_instances(instances):
                 print(f'        Error: Incorrect IAM Role - {instance.iam}')
 
             if not instance.ip == None:
-                print('        Found Public IP Address')
+                print(f'        Found Public IP Address: {instance.ip}')
 
             else:
                 print(f'        Error: Incorrect Public IP Settings - {instance.ip}')
