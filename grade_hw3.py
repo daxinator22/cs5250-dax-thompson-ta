@@ -1,5 +1,6 @@
 import boto3
 import Instance, Iam_Role, VPC
+from sys import argv
 
 
 def check_iam_role(role):
@@ -270,6 +271,7 @@ def view_vpc(vpc):
 vpc_id = None
 
 iam = boto3.resource('iam')
+role = None
 try:
     role = Iam_Role.Iam_Role(iam.Role('cs5250-EC2-backend-role'))
     check_iam_role(role)
@@ -296,3 +298,12 @@ for instance in instances:
 
 print()
 check_instances(instances)
+
+if len(argv) > 1 and argv[1] == '-p':
+    if not role == None: 
+        print(role.get_role())
+
+    print(vpc.get_vpc())
+    for instance in instances:
+        print(instance.get_instance())
+
