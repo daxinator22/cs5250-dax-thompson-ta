@@ -1,5 +1,6 @@
 import boto3
 import Instance, Iam_Role, VPC
+from sys import argv
 
 
 def check_iam_role(role):
@@ -32,7 +33,7 @@ def check_instances(instances):
     for instance in instances:
         if instance.name == 'HostA':
             print('    Found HostA')
-            if instance.ami == 'ami-0be2609ba883822ec':
+            if instance.ami == 'ami-0be2609ba883822ec' or instance.ami == 'ami-047a51fa27710816e':
                 print('        Found Amazon Linux AMI')
 
             else:
@@ -57,7 +58,7 @@ def check_instances(instances):
                 print(f'        Error: Incorrect IAM Role - {instance.iam}')
 
             if not instance.ip == None:
-                print('        Found Public IP Address')
+                print(f'        Found Public IP Address: {instance.ip}')
 
             else:
                 print(f'        Error: Incorrect Public IP Settings - {instance.ip}')
@@ -270,6 +271,7 @@ def view_vpc(vpc):
 vpc_id = None
 
 iam = boto3.resource('iam')
+role = None
 try:
     role = Iam_Role.Iam_Role(iam.Role('cs5250-EC2-backend-role'))
     check_iam_role(role)
@@ -296,3 +298,12 @@ for instance in instances:
 
 print()
 check_instances(instances)
+
+if len(argv) > 1 and argv[1] == '-p':
+    if not role == None: 
+        print(role.get_role())
+
+    print(vpc.get_vpc())
+    for instance in instances:
+        print(instance.get_instance())
+
