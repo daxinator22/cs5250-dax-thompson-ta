@@ -1,4 +1,4 @@
-import boto3
+import boto3, gzip, os
 
 def check_bucket_setup(buckets, unique_word):
     bucket_ends = ['requests', 'web', 'dist']
@@ -71,8 +71,16 @@ def check_bucket_name(bucket, unique_word, bucket_ends):
         return False
 
 #Checks the bucket logs
-def check_bucket_logs:
-    
+def check_bucket_logs(client, resource, unique_word):
+    objects = client.list_objects(Bucket=f'usu-cs5250-{unique_word}-dist', Prefix='logs/')['Contents']
+    log_file_name = objects[0]
+    log_file = resource.Object(f'usu-cs5250-{unique_word}-dist', log_file_name['Key'])
+    log_file.download_file('log.log.gz')
+    f = gzip.open('log.log.gz', 'rb')
+    file_content = f.read()
+    f.close
+    #print(file_content)
+    os.remove('log.log.gz')
 
 
 #Sets up AWS connection
@@ -85,5 +93,5 @@ for bucket in s3_client.list_buckets()['Buckets']:
     buckets.append(s3_resource.Bucket(bucket['Name']))
 
 unique_word = buckets[0].name.split('-')[2]
-check_bucket_setup(buckets, unique_word)
-check_bucket_logs(buckets)
+#check_bucket_setup(buckets, unique_word)
+check_bucket_logs(s3_client, s3_resource, unique_word)
