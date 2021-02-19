@@ -97,18 +97,13 @@ def check_bucket_logs(client, resource, unique_word):
     objects = client.list_objects(Bucket=f'usu-cs5250-{unique_word}-dist', Prefix='logs/')['Contents']
     log_file_name = None
     for object_file in objects:
-        if object_file['Key'].endswith('log.gz'):
+        if object_file['Key'].startswith('producer'):
             log_file_name = object_file
             break
     
     try:
         log_file = resource.Object(f'usu-cs5250-{unique_word}-dist', log_file_name['Key'])
-        log_file.download_file('log.log.gz')
-        f = gzip.open('log.log.gz', 'rb')
-        file_content = f.read()
-        f.close
-        print(file_content)
-        os.remove('log.log.gz')
+        log_file.download_file('producer.log')
     except:
         print('No log files found')
 
