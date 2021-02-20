@@ -94,16 +94,9 @@ def check_bucket_name(bucket, unique_word, bucket_ends):
 
 #Checks the bucket logs
 def check_bucket_logs(client, resource, unique_word):
-    objects = client.list_objects(Bucket=f'usu-cs5250-{unique_word}-dist', Prefix='logs/')['Contents']
-    log_file_name = None
-    for object_file in objects:
-        if object_file['Key'].startswith('producer'):
-            log_file_name = object_file
-            break
-    
     try:
-        log_file = resource.Object(f'usu-cs5250-{unique_word}-dist', log_file_name['Key'])
-        log_file.download_file('producer.log')
+        bucket = resource.Bucket(f'usu-cs5250-{unique_word}-dist')
+        bucket.download_file('logs/producer.log', 'producer.log')
     except:
         print('No log files found')
 
@@ -119,4 +112,4 @@ for bucket in s3_client.list_buckets()['Buckets']:
 
 unique_word = buckets[0].name.split('-')[2]
 check_bucket_setup(s3_client, buckets, unique_word)
-#check_bucket_logs(s3_client, s3_resource, unique_word)
+check_bucket_logs(s3_client, s3_resource, unique_word)
