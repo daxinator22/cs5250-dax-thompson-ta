@@ -94,22 +94,9 @@ def check_bucket_name(bucket, unique_word, bucket_ends):
 
 #Checks the bucket logs
 def check_bucket_logs(client, resource, unique_word):
-<<<<<<< HEAD
-    objects = client.list_objects(Bucket=f'usu-cs5250-{unique_word}-dist', Prefix='logs/')['Contents']
-    log_file_name = None
-    for object_file in objects:
-        if object_file['Key'].endswith('producer.log'):
-            log_file_name = object_file
-            break
-    
-    try:
-        log_file = resource.Object(f'usu-cs5250-{unique_word}-dist', log_file_name['Key'])
-        log_file.download_file('log.log')
-=======
     try:
         bucket = resource.Bucket(f'usu-cs5250-{unique_word}-dist')
         bucket.download_file('logs/producer.log', 'producer.log')
->>>>>>> 4759a64c9ccc50ca438bc69aae5f950ad287e0a8
     except:
         print('No log files found')
 
