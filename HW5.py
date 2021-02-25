@@ -6,13 +6,16 @@ class HW5():
     dyanmodb_secondary_key = None
     rds_identifier = None
     sg_name = None
-    sg_inbound_rule = None
-    sg_outbound_rule = None
+    sg_inbound_rule = list()
+    sg_outbound_rule = list()
     logs = 0
 
     def aws_sg_setup(self, sg):
-        self.sg_inbound_rule = sg.ip_permissions[0]
-        self.sg_outbound_rule = sg.ip_permissions_egress[0]
+        self.sg_inbound_rule.append(sg.ip_permissions[0]['FromPort'])
+        self.sg_inbound_rule.append(sg.ip_permissions[0]['IpProtocol'])
+        self.sg_inbound_rule.append(sg.ip_permissions[0]['IpRanges'][0]['CidrIp'])
+        self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpProtocol'])
+        self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpRanges'][0]['CidrIp'])
         self.sg_name = sg.group_name
 
     def aws_rds_setup(self, client):
@@ -61,9 +64,25 @@ class HW5():
 
     def file_setup(self, path):
         config = open(path)
-        print(config.read())
+
+        config_list = list()
+        for line in config:
+            try:
+                parts = line.split(':  ')
+                config_list.append(parts[1][:-1])
+            except:
+                continue
+
         config.close()
 
+        self.dynamodb_primary_key = config_list[0][:-1]
+        self.dynamodb_secondary_key = config_list[1]
+        self.rds_identifier = config_list[2]
+        self.sg_name = config_list[3]
+        self.sg_inbound_rule.append(int(config_list[4]))
+        self.sg_inbound_rule.append(config_list[5:7])
+        self.sg_outbound_rule = config_list[8:10]
+        self.logs = int(config_list[10])
 
     def to_string(self):
         string = f'''
@@ -73,15 +92,47 @@ DynamoDB Setup
 RDS Setup
     Identifier               :  {self.rds_identifier}
     Security Group Name      :  {self.sg_name}
-                                Inbound Rules    :  Port       :  {self.sg_inbound_rule['FromPort']}
-                                                    Protocol   :  {self.sg_inbound_rule['IpProtocol']}
-                                                    IP Range   :  {self.sg_inbound_rule['IpRanges'][0]['CidrIp']}
-                                Outbound Rules   :  Protocol   :  {self.sg_outbound_rule['IpProtocol']}
-                                                    IP Range   :  {self.sg_outbound_rule['IpRanges'][0]['CidrIp']}
+                                Inbound Rules    :
+                                                    Port       :  {self.sg_inbound_rule[0]}
+                                                    Protocol   :  {self.sg_inbound_rule[1]}
+                                                    IP Range   :  {self.sg_inbound_rule[2]}
+                                Outbound Rules   :  
+                                                    Protocol   :  {self.sg_outbound_rule[0]}
+                                                    IP Range   :  {self.sg_outbound_rule[1]}
 S3 Log Files
-    {self.logs} logs were found'''
+    Log Files                :  {self.logs}'''
 
 
         return string
+
+    def compare_to(self, compare):
+
+        same = True
+        if not compare.dynamodb_primary_key == self.dynamodb_primary_key:
+            same = False
+            print(f'Incorrect DynamoDB Primary Key: {self.dynamodb_primary_key}')
+        if not compare.dynamodb_secondary_key == self.dynamodb_secondary_key:
+            same = False
+            print(f'Incorrect DynamoDB Secondary Key: {self.dynamodb_secondary_key}')
+        if not compare.rds_identifier == self.rds_identifier:
+            same = False
+            print(f'Incorrect RDS Identifier: {self.rds_identifier}')
+        if not compare.sg_name == self.sg_name:
+            same = False
+            print(f'Incorrect Security Group Name: {self.sg_name}')
+        if not compare.sg_inbound_rule == self.sg_inbound_rule:
+            same = False
+            print(f'Incorrect Security Group Inbound Rule: {self.sg_inbound_rule}')
+        if not compare.sg_outbound_rule == self.sg_outbound_rule:
+            same = False
+            print(f'Incorrect Security Group Outbound Rule: {self.sg_outbound_rule}')
+        if not self.logs >= 2:
+            same = False
+            print(f'Incorrect Security Group Outbound Rule: {self.sg_outbound_rule}')
+
+        if same:
+            return 0
+        else:
+            return -1
     
 

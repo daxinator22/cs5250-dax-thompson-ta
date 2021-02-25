@@ -5,10 +5,12 @@ DynamoDB Setup
 RDS Setup
     Identifier               :  cs5250
     Security Group Name      :  postgres-sg
-                                Inbound Rules    :  Port       :  5432
+                                Inbound Rules    :
+                                                    Port       :  5432
                                                     Protocol   :  tcp
                                                     IP Range   :  0.0.0.0/0
-                                Outbound Rules   :  Protocol   :  -1
+                                Outbound Rules   :  
+                                                    Protocol   :  -1
                                                     IP Range   :  0.0.0.0/0
 S3 Log Files
-    5 logs were found
+    Log Files                :  5
