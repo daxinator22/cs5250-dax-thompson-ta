@@ -1,0 +1,5 @@
+Good insights.
+DynamoDB is already pretty scalable, but you can add a sort key to the primary key to help with certain types of queries. 
+S3 is already pretty scalable, but you can improve queries by using keys with a prefix structure.
+Auto-scaling is available for RDS and DynamoDB, but it is more important that you understand how the scaling actually works.
+Postgres can be scaled vertically using a larger instance.
