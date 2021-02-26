@@ -8,4 +8,6 @@ student = HW5.HW5()
 #student.aws_setup(dynamodb_resource, rds_client, s3_client, s3_resource)
 #print(student.to_string())
 example = HW5.HW5()
-example.file_setup('hw5_example.txt')
+#example.file_setup('hw5_example.txt')
+
+print(student.to_string())

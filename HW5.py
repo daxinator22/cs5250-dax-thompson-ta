@@ -61,8 +61,24 @@ class HW5():
 
     def file_setup(self, path):
         config = open(path)
-        print(config.read())
+
+        config_list = list()
+        for line in config:
+            try:
+                parts = line.split(':  ')
+                config_list.append(parts[1])
+            except:
+                continue
+
         config.close()
+        self.dynamodb_primary_key = config_list[0]
+        self.dynamodb_secondary_key = config_list[1]
+        self.rds_identifier = config_list[2]
+        self.sg_name = config_list[3]
+        #self.sg_inbound_rule = config_list[4:6]
+        #self.sg_outbound_rule = config_list[6:8]
+        #self.logs = int(config_list[9])
+            
 
 
     def to_string(self):
@@ -79,7 +95,7 @@ RDS Setup
                                 Outbound Rules   :  Protocol   :  {self.sg_outbound_rule['IpProtocol']}
                                                     IP Range   :  {self.sg_outbound_rule['IpRanges'][0]['CidrIp']}
 S3 Log Files
-    {self.logs} logs were found'''
+{self.logs}'''
 
 
         return string
