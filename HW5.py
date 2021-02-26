@@ -11,12 +11,16 @@ class HW5():
     logs = 0
 
     def aws_sg_setup(self, sg):
-        self.sg_inbound_rule.append(sg.ip_permissions[0]['FromPort'])
-        self.sg_inbound_rule.append(sg.ip_permissions[0]['IpProtocol'])
-        self.sg_inbound_rule.append(sg.ip_permissions[0]['IpRanges'][0]['CidrIp'])
-        self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpProtocol'])
-        self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpRanges'][0]['CidrIp'])
-        self.sg_name = sg.group_name
+        try:
+            self.sg_inbound_rule.append(sg.ip_permissions[0]['FromPort'])
+            self.sg_inbound_rule.append(sg.ip_permissions[0]['IpProtocol'])
+            self.sg_inbound_rule.append(sg.ip_permissions[0]['IpRanges'][0]['CidrIp'])
+            self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpProtocol'])
+            self.sg_outbound_rule.append(sg.ip_permissions_egress[0]['IpRanges'][0]['CidrIp'])
+            self.sg_name = sg.group_name
+        except:
+            return
+
 
     def aws_rds_setup(self, client):
         instances = client.describe_db_instances()['DBInstances']
@@ -135,7 +139,7 @@ S3 Log Files
             print(f'Incorrect Security Group Outbound Rule: {self.sg_outbound_rule}')
         if not self.logs >= 2:
             same = False
-            print(f'Incorrect Security Group Outbound Rule: {self.sg_outbound_rule}')
+            print(f'Incorrect Log Numbers: {self.logs}')
 
         if same:
             return 0
